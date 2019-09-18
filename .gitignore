@@ -1,0 +1,13 @@
+/bin
+/dist
+/test-results
+/target/
+/.idea
+/img
+/config/test-output
+/config/test-results
+/test-output
+/.metadata/
+/*.iml
+/.DS_Store
+src/test/resources/manifest.json
