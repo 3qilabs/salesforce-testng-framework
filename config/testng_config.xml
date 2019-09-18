@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Suite">
+    <test name="com.salesforce.services.SmokeTest">
+        <classes>
+            <class name="com.salesforce.services.SmokeTest">
+                <methods>
+                    <include name="createAccount"/>
+                    <include name="getAccount"/>
+                    <include name="deleteAccount"/>
+                    <include name="validateDeletedAccount"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="com.salesforce.web.SmokeTest">
+        <classes>
+            <class name="com.salesforce.web.SmokeTest">
+                <methods>
+                    <include name="createAccount"/>
+                    <include name="getAccount"/>
+                    <include name="updateAccount"/>
+                    <include name="deleteAccount"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="com.salesforce.integrated.SmokeTest">
+        <classes>
+            <class name="com.salesforce.integrated.Integrated">
+                <methods>
+                    <include name="createNewAccount"/>
+                    <include name="updatedAccount"/>
+                    <include name="deleteAccount"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
