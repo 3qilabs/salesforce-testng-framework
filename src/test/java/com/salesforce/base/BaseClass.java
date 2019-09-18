@@ -51,7 +51,7 @@ public class BaseClass {
      * @return A Hash Map for the test case being executed: {testcase_id => {"column_header" => "cell_value"}}
      */
     @DataProvider(name = "excelData")
-    public Object[] readExcelData(Method testcaseName) {
+    public Object[][] readExcelData(Method testcaseName) {
         Map<String, Map<String, String>> excelData = new Hashtable<>();
         try {
             // Todo: parameterize the excel name
@@ -83,7 +83,7 @@ public class BaseClass {
             System.out.println("Exception in readExcelData: \n");
             ex.printStackTrace();
         }
-        return new Object[]{excelData.get(testcaseName.getName())};
+        return new Object[][]{{excelData.get(testcaseName.getName())}};
     }
 
     /**
