@@ -1,9 +1,11 @@
 package com.salesforce.base;
 
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.response.Response;
-import com.jayway.restassured.specification.RequestSpecification;
+import static org.hamcrest.Matchers.*;
+
 import com.salesforce.utilities.GenericUtility;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -35,6 +37,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -51,10 +54,21 @@ public class BaseTest {
      */
     public JSONObject manifestJsonObject;
     public static WebDriver driver;
+    public Properties appProp = new Properties();
     private  String url;
     private String psw;
     private String usrname;
 
+    @BeforeSuite(alwaysRun = true)
+    private void readAppProps(){
+        try{
+            InputStream inputStream = new FileInputStream(pwd + "../../../resources/application.properties");
+            appProp.load(inputStream);
+        }catch(IOException ex){
+
+        }
+
+    }
     /**
      * This is a TestNG Data Provider, it reads data from an excel at /src/main/resources/
      * @param testcaseName
@@ -65,7 +79,7 @@ public class BaseTest {
         Map<String, Map<String, String>> excelData = new Hashtable<>();
         try {
             // Todo: parameterize the excel name
-            File src = new File(pwd + "/src/main/resources/salesforce_dev_api.xlsx");
+            File src = new File(pwd + "/resources/salesforce_dev_api.xlsx");
             FileInputStream fis = new FileInputStream(src);
             XSSFWorkbook file = new XSSFWorkbook(fis);
             int numOfSheets = file.getNumberOfSheets();
@@ -104,7 +118,7 @@ public class BaseTest {
         JSONParser parser = new JSONParser();
 
         try {
-            Object obj = parser.parse(new FileReader(pwd + "/src/main/resources/manifest.json"));
+            Object obj = parser.parse(new FileReader(pwd + "/resources/manifest.json"));
 
             manifestJsonObject = (JSONObject) obj;
 

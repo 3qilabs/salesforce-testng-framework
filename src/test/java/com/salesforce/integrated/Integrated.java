@@ -1,6 +1,5 @@
 package com.salesforce.integrated;
 
-import com.jayway.restassured.response.Response;
 import com.salesforce.base.BaseUiClass;
 import com.salesforce.base.JsonOutput;
 import com.salesforce.pages.AccountsDetailPage;

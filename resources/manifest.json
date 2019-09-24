@@ -1,0 +1,14 @@
+{
+  "salesforce_instance": "https://na112.salesforce.com/services/data/v45.0/sobjects",
+  "token_url": "https://login.salesforce.com/services/oauth2/token",
+  "grant_type":"password",
+  "client_id":"3MVG9vtcvGoeH2biiKtqjoyO03b4QPIUIyPloJTbr2mm6IpyEnlgYzxjvazCpGo3P8d6wddKwHUY412Twx3y1&",
+  "client_secret":"C20C0ECC3DE4CD1A8FEE6BAF3CFD56DFB1AEFF2BB12AD61C9F7D47BE32830832",
+  "username":"tilak@3qilabs.com",
+  "webPassword": "Automation@3qi",
+  "password":"Automation@3qimFpwQ5bOu1G8nnEBj3jwNF8q",
+  "salesforce_url" : "https://login.salesforce.com",
+  "browser": "chrome",
+  "waitSeconds": "1000",
+  "closeBrowser": "Method"
+}

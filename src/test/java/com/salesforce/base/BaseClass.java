@@ -1,9 +1,14 @@
 package com.salesforce.base;
 
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.response.Response;
-import com.jayway.restassured.specification.RequestSpecification;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.google.gson.Gson;
+import com.salesforce.data.SalesForceAccount;
 import com.salesforce.utilities.GenericUtility;
+import io.restassured.RestAssured;
+import io.restassured.mapper.ObjectMapperType;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.response.Response;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -35,7 +40,7 @@ import java.util.Map;
  * This is the base class with methods to make HTTP calls
  * This also has a TestNG Data Provider that reads data from an excel
  * The HTTP Calls made in these functions get a new access token for every call and credentials are read from /src/test/resources/manifest.json
- * */
+ */
 public class BaseClass {
 
     public String pwd = System.getProperty("user.dir");
@@ -47,6 +52,7 @@ public class BaseClass {
 
     /**
      * This is a TestNG Data Provider, it reads data from an excel at /src/test/resources/
+     *
      * @param testcaseName
      * @return A Hash Map for the test case being executed: {testcase_id => {"column_header" => "cell_value"}}
      */
@@ -94,7 +100,7 @@ public class BaseClass {
         JSONParser parser = new JSONParser();
 
         try {
-            Object obj = parser.parse(new FileReader(pwd + "/src/test/resources/manifest.json"));
+            Object obj = parser.parse(new FileReader(pwd + "/resources/manifest.json"));
 
             manifestJsonObject = (JSONObject) obj;
 
@@ -112,6 +118,7 @@ public class BaseClass {
 
     /**
      * Make HTTP Call using java.net.HttpURLConnection
+     *
      * @param targetURL
      * @param requestType
      * @return org.json.JSONObject Response from HTTP call
@@ -126,6 +133,7 @@ public class BaseClass {
 
     /**
      * Make HTTP Call using java.net.HttpURLConnection
+     *
      * @param targetURL
      * @param requestType
      * @param requestParams
@@ -140,6 +148,7 @@ public class BaseClass {
 
     /**
      * Make HTTP Call using java.net.HttpURLConnection
+     *
      * @param targetURL
      * @param requestType
      * @param requestParams
@@ -223,6 +232,7 @@ public class BaseClass {
 
     /**
      * Make HTTP Call using org.apache.http.client
+     *
      * @param targetURL
      * @param requestType
      * @param requestParams
@@ -279,7 +289,7 @@ public class BaseClass {
         if (!(stackTraceElements[2].getMethodName().equals("getAccessToken"))) {
             System.out.println("********Getting Access Token********");
             accessToken = getAccessToken();
-            request.addHeader ("Authorization", "Bearer " + accessToken);
+            request.addHeader("Authorization", "Bearer " + accessToken);
             System.out.println("********Making HTTP Call********");
         }
 
@@ -289,10 +299,9 @@ public class BaseClass {
         try {
             response = httpClient.execute(request);
             HttpEntity entity = response.getEntity();
-            if(entity != null){
+            if (entity != null) {
                 strResponse = GenericUtility.getStringFromInputStream(entity.getContent());
-            }
-            else{
+            } else {
                 // Response doesn't have a body(DELETE call response in this case)
                 strResponse = "{}";
             }
@@ -304,25 +313,27 @@ public class BaseClass {
             return new JsonOutput();
         }
 //        return new org.json.JSONObject(strResponse.toString());
-        try{
-            return new JsonOutput(response.getStatusLine().getStatusCode(), new org.json.JSONObject(strResponse),response.getAllHeaders());
-        }
-        catch (org.json.JSONException e){
-            return new JsonOutput(response.getStatusLine().getStatusCode(), new org.json.JSONArray(strResponse),response.getAllHeaders());
+        try {
+            return new JsonOutput(response.getStatusLine().getStatusCode(), new org.json.JSONObject(strResponse), response.getAllHeaders());
+        } catch (org.json.JSONException e) {
+            return new JsonOutput(response.getStatusLine().getStatusCode(), new org.json.JSONArray(strResponse), response.getAllHeaders());
         }
     }
 
     /**
      * Overloaded method for making HTTP Call with default headers
+     *
      * @param targetURL
      * @param requestType
      * @return
      */
-    protected JsonOutput makeRestCallUsingHttpClient(String targetURL, String requestType){
+    protected JsonOutput makeRestCallUsingHttpClient(String targetURL, String requestType) {
         return makeRestCallUsingHttpClient(targetURL, requestType, "", new HashMap<>());
     }
+
     /**
      * verloaded method for making HTTP Call with default headers
+     *
      * @param baseURI
      * @param targetURL
      * @param requestType
@@ -334,6 +345,7 @@ public class BaseClass {
 
     /**
      * Make HTTP Call using rest-assured
+     *
      * @param baseURI
      * @param targetURL
      * @param requestType
@@ -342,9 +354,13 @@ public class BaseClass {
      * @return
      */
 
-    protected Response makeRestCallUsingRestAssured(String baseURI, String targetURL, String requestType, String requestParams, HashMap<String, String> headers) {
+    protected Response makeRestCallUsingRestAssured(String baseURI, String targetURL, String requestType, Object requestParams, HashMap<String, String> headers) {
         try {
-            RestAssured.baseURI = baseURI;
+            try {
+                RestAssured.baseURI = baseURI;
+            } catch (NoClassDefFoundError e) {
+                RestAssured.baseURI = baseURI;
+            }
             RequestSpecification request = RestAssured.given();
             if (headers.isEmpty()) {
                 request.header("Content-Type", "application/json");
@@ -367,7 +383,14 @@ public class BaseClass {
                 System.out.println("********Making HTTP Call********");
             }
 
-            request.body(requestParams);
+            if (requestParams.getClass().equals("String")){
+                request.body(requestParams);
+            }else if (!requestParams.toString().isEmpty()) {
+/*
+                ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+                String json = ow.writeValueAsString(requestParams);*/
+                request.body(requestParams, ObjectMapperType.GSON);
+            }
             JsonOutput jsonOutput = new JsonOutput();
             switch (requestType) {
                 case "GET":
@@ -379,7 +402,7 @@ public class BaseClass {
                 default:
                     return null;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -387,6 +410,7 @@ public class BaseClass {
 
     /**
      * Get an access token by making a HTTP Call. Request params and credentials are read from /src/test/resources/manifest.json
+     *
      * @return Access token string
      */
     private String getAccessToken() {
