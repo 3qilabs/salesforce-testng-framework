@@ -1,4 +1,4 @@
-package com.salesforce.web;
+package com.salesforce.testsuits.browser;
 
 import com.salesforce.base.BaseUiClass;
 import com.salesforce.pages.AccountsDetailPage;

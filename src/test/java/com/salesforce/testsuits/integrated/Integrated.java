@@ -1,8 +1,7 @@
-package com.salesforce.integrated;
+package com.salesforce.testsuits.integrated;
 
 import com.salesforce.base.BaseUiClass;
 import com.salesforce.base.JsonOutput;
-import com.salesforce.pages.AccountsDetailPage;
 import com.salesforce.pages.AccountsPage;
 import com.salesforce.utilities.GenericUtility;
 import org.openqa.selenium.Keys;
@@ -11,9 +10,6 @@ import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.salesforce.utilities.GenericUtility.getNewName;
-import static com.salesforce.utilities.GenericUtility.getRandomNumber;
 
 public class Integrated  extends BaseUiClass {
     private static String id;

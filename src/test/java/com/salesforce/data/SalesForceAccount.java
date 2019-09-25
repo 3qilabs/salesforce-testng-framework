@@ -1,7 +1,5 @@
 package com.salesforce.data;
 
-import com.google.errorprone.annotations.RestrictedApi;
-import com.salesforce.utilities.GenericUtility;
 import com.salesforce.utilities.RandomStringGenerator;
 import com.salesforce.utilities.Randomizer;
 
@@ -9,7 +7,7 @@ public class SalesForceAccount extends BaseDataBean{
     @Randomizer(length=8)
     public String Name;
 
-    @Randomizer(dataset = "shopping.cities")
+    @Randomizer(dataset = "shipping.cities")
     public String ShippingCity;
 
     @Randomizer(prefix="800", length=7, type= RandomStringGenerator.RandomizerTypes.DIGITS_ONLY)

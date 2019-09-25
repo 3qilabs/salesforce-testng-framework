@@ -1,7 +1,5 @@
 package com.salesforce.base;
 
-import static org.hamcrest.Matchers.*;
-
 import com.salesforce.utilities.GenericUtility;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;

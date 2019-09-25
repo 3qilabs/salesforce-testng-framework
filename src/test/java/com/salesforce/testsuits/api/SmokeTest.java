@@ -1,15 +1,10 @@
-package com.salesforce.services;
-
-import static org.hamcrest.Matchers.*;
+package com.salesforce.testsuits.api;
 
 import com.salesforce.base.BaseClass;
 import com.salesforce.base.JsonOutput;
-import com.salesforce.data.SalesForceDataBean;
-import io.restassured.response.Response;
 import junit.framework.Assert;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -18,18 +13,18 @@ import java.util.Map;
 import static com.salesforce.utilities.GenericUtility.getRandomNumber;
 
 public class SmokeTest extends BaseClass {
-    private static String id;
+    private String id;
 
     @Test(dataProvider = "excelData", description = "Create a new account", priority = 0)
     public void createAccount(Map<String, String> tcData) {
-        String targetURL = manifestJsonObject.get(tcData.get("URL")) + "/account";
+        String targetURL = (String)props.getProperty("env.baseurl") + "/account";
         String requestParam = tcData.get("Request");
         requestParam = requestParam.replace("RANDOM_NUMBER", String.valueOf(getRandomNumber()));
         System.out.println("Request body: " + requestParam);
         String requestType = tcData.get("Request Type");
         JsonOutput response = makeRestCallUsingHttpClient(targetURL, requestType, requestParam, new HashMap<String, String>());
         System.out.println("Response: " + response.getJsonResponse());
-        id = response.getJsonResponse().get("id").toString();
+        this.id = response.getJsonResponse().get("id").toString();
         boolean success = (boolean) response.getJsonResponse().get("success");
         Assert.assertTrue(success);
     }

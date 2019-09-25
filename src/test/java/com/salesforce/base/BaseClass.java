@@ -1,10 +1,8 @@
 package com.salesforce.base;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.google.gson.Gson;
-import com.salesforce.data.SalesForceAccount;
+import com.salesforce.core.ConfigurationManager;
 import com.salesforce.utilities.GenericUtility;
+import com.salesforce.utilities.PropertyUtil;
 import io.restassured.RestAssured;
 import io.restassured.mapper.ObjectMapperType;
 import io.restassured.specification.RequestSpecification;
@@ -49,6 +47,7 @@ public class BaseClass {
      * Field to store all the environment params from /src/test/resources/manifest.json
      */
     public static JSONObject manifestJsonObject;
+    protected PropertyUtil props = ConfigurationManager.getBundle();
 
     /**
      * This is a TestNG Data Provider, it reads data from an excel at /src/test/resources/
@@ -61,7 +60,7 @@ public class BaseClass {
         Map<String, Map<String, String>> excelData = new Hashtable<>();
         try {
             // Todo: parameterize the excel name
-            File src = new File(pwd + "/src/test/resources/salesforce_dev_api.xlsx");
+            File src = new File(pwd + "/resources/salesforce_dev_api.xlsx");
             FileInputStream fis = new FileInputStream(src);
             XSSFWorkbook file = new XSSFWorkbook(fis);
             int numOfSheets = file.getNumberOfSheets();
@@ -347,14 +346,14 @@ public class BaseClass {
      * Make HTTP Call using rest-assured
      *
      * @param baseURI
-     * @param targetURL
+     * @param endPoint
      * @param requestType
      * @param requestParams
      * @param headers
      * @return
      */
 
-    protected Response makeRestCallUsingRestAssured(String baseURI, String targetURL, String requestType, Object requestParams, HashMap<String, String> headers) {
+    protected Response makeRestCallUsingRestAssured(String baseURI, String endPoint, String requestType, Object requestParams, HashMap<String, String> headers) {
         try {
             try {
                 RestAssured.baseURI = baseURI;
@@ -394,11 +393,11 @@ public class BaseClass {
             JsonOutput jsonOutput = new JsonOutput();
             switch (requestType) {
                 case "GET":
-                    return request.get(targetURL);
+                    return request.get(endPoint);
                 case "DELETE":
-                    return request.delete(targetURL);
+                    return request.delete(endPoint);
                 case "POST":
-                    return request.post(targetURL);
+                    return request.post(endPoint);
                 default:
                     return null;
             }
@@ -414,11 +413,11 @@ public class BaseClass {
      * @return Access token string
      */
     private String getAccessToken() {
-        String TargetURL = manifestJsonObject.get("token_url").toString();
+        String TargetURL = props.getProperty("token_url").toString();
         String requestType = "POST";
-        String requestParams = "grant_type" + "=" + manifestJsonObject.get("grant_type") + "&" + "client_id" + "=" + manifestJsonObject.get("client_id") +
-                "&" + "client_secret" + "=" + manifestJsonObject.get("client_secret") + "&" + "username" + "=" + manifestJsonObject.get("username") + "&" +
-                "password" + "=" + manifestJsonObject.get("password");
+        String requestParams = "grant_type" + "=" + props.getProperty("grant_type") + "&" + "client_id" + "=" + props.getProperty("client_id") +
+                "&" + "client_secret" + "=" + props.getProperty("client_secret") + "&" + "username" + "=" + props.getProperty("username") + "&" +
+                "password" + "=" + props.getProperty("password");
         int requestLength = requestParams.length();
         byte[] encodedRequestParams = requestParams.getBytes(StandardCharsets.UTF_8);
         HashMap<String, String> headers = new HashMap<String, String>();

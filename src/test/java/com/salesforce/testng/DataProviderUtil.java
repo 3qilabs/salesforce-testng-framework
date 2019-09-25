@@ -21,12 +21,7 @@
  ******************************************************************************/
 package com.salesforce.testng;
 
-import static com.salesforce.core.ConfigurationManager.getBundle;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,12 +30,8 @@ import java.util.Map;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.impl.LogFactoryImpl;
-import org.json.JSONObject;
-import org.testng.annotations.ITestAnnotation;
 
 import com.salesforce.core.ConfigurationManager;
-import com.salesforce.utilities.PropertyUtil;
-import com.salesforce.utilities.StringUtil;
 
 /**
  * Utility class for TestNG data providers.
@@ -76,9 +67,7 @@ import com.salesforce.utilities.StringUtil;
  * </ol>
  * </ol>
  * </ul>
- * com.qmetry.qaf.automation.testng.dataprovider.DataProviderUtil.java
- * 
- * @author chirag.jayswal
+ *
  */
 public class DataProviderUtil {
 	private static final Log logger = LogFactoryImpl.getLog(DataProviderUtil.class);

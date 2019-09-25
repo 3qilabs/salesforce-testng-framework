@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -48,7 +47,6 @@ import com.salesforce.keys.ApplicationProperties;
 import com.salesforce.utilities.FileUtil;
 import com.salesforce.utilities.PropertyUtil;
 import com.salesforce.utilities.StringComparator;
-import com.salesforce.utilities.StringMatcher;
 import com.salesforce.utilities.StringUtil;
 
 /**
@@ -65,7 +63,6 @@ import com.salesforce.utilities.StringUtil;
  * {@link #getInstance()}.{@link#getApplicationProperties()};<br>
  * String sval = props.{@link PropertyUtil#getPropertyValue(String)}
  * 
- * @author chirag
  */
 public class ConfigurationManager {
 	// early initialization

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="Suite">
-    <test name="com.salesforce.services.SmokeTest">
+    <test name="com.salesforce.testsuits.api.SmokeTest">
         <classes>
-            <class name="com.salesforce.services.SmokeTest">
+            <class name="com.salesforce.testsuits.api.SmokeTest">
                 <methods>
                     <include name="createAccount"/>
                     <include name="getAccount"/>
@@ -13,9 +13,9 @@
         </classes>
     </test>
 
-    <test name="com.salesforce.web.SmokeTest">
+    <!--<test name="com.salesforce.testsuits.browser.SmokeTest">
         <classes>
-            <class name="com.salesforce.web.SmokeTest">
+            <class name="com.salesforce.testsuits.browser.SmokeTest">
                 <methods>
                     <include name="createAccount"/>
                     <include name="getAccount"/>
@@ -28,7 +28,7 @@
 
     <test name="com.salesforce.integrated.SmokeTest">
         <classes>
-            <class name="com.salesforce.integrated.Integrated">
+            <class name="com.salesforce.testsuits.integrated.Integrated">
                 <methods>
                     <include name="createNewAccount"/>
                     <include name="updatedAccount"/>
@@ -36,5 +36,5 @@
                 </methods>
             </class>
         </classes>
-    </test>
+    </test>-->
 </suite>
