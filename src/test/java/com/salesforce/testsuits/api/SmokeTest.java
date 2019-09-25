@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.salesforce.utilities.GenericUtility.getRandomNumber;
+import static com.salesforce.utilities.GenericUtility.waitForPageToLoad;
 
 public class SmokeTest extends BaseClass {
     private String id;

@@ -30,6 +30,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -170,7 +174,9 @@ public class BaseClass {
             // If the caller is NOT "getAccessToken", then get the access token
             if (!(stackTraceElements[2].getMethodName().equals("getAccessToken"))) {
                 System.out.println("********Getting Access Token********");
-                accessToken = getAccessToken();
+                //accessToken = getAccessToken();
+                getAccessToken();
+                accessToken = props.getProperty("accessToken").toString();
                 connection.setRequestProperty("Authorization", "Bearer " + accessToken);
             }
             if (!headers.isEmpty()) {
@@ -287,7 +293,9 @@ public class BaseClass {
         // If the caller is NOT "getAccessToken", then get the access token
         if (!(stackTraceElements[2].getMethodName().equals("getAccessToken"))) {
             System.out.println("********Getting Access Token********");
-            accessToken = getAccessToken();
+           // accessToken = getAccessToken();
+            getAccessToken();
+            accessToken = props.getProperty("accessToken").toString();
             request.addHeader("Authorization", "Bearer " + accessToken);
             System.out.println("********Making HTTP Call********");
         }
@@ -377,7 +385,9 @@ public class BaseClass {
             // If the caller is NOT "getAccessToken", then get the access token
             if (!(stackTraceElements[2].getMethodName().equals("getAccessToken"))) {
                 System.out.println("********Getting Access Token********");
-                accessToken = getAccessToken();
+                //accessToken = getAccessToken();
+                getAccessToken();
+                accessToken = props.getProperty("accessToken").toString();
                 request.header("Authorization", "Bearer " + accessToken);
                 System.out.println("********Making HTTP Call********");
             }
@@ -412,7 +422,7 @@ public class BaseClass {
      *
      * @return Access token string
      */
-    private String getAccessToken() {
+    private void getAccessToken() {
         String TargetURL = props.getProperty("token_url").toString();
         String requestType = "POST";
         String requestParams = "grant_type" + "=" + props.getProperty("grant_type") + "&" + "client_id" + "=" + props.getProperty("client_id") +
@@ -422,11 +432,20 @@ public class BaseClass {
         byte[] encodedRequestParams = requestParams.getBytes(StandardCharsets.UTF_8);
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put("Content-Type", "application/x-www-form-urlencoded");
-//        headers.put("Content-Length", Integer.toString(requestLength));
-//        org.json.JSONObject response = makeRestCall(TargetURL, requestType, encodedRequestParams, headers);
-        JsonOutput response = makeRestCallUsingHttpClient(TargetURL, requestType, requestParams, headers);
-        return response.getJsonResponse().get("access_token").toString();
-    }
 
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+        LocalDateTime localDateTime = LocalDateTime.now();
+        long currentAccessTokenTimeStamp = Long.parseLong(dateTimeFormatter.format(localDateTime));
+
+        if(props.getProperty("accessTokenTimeStamp") == null){
+          props.setProperty("accessTokenTimeStamp", 0);
+        }
+        if((currentAccessTokenTimeStamp - Long.parseLong(props.getProperty("accessTokenTimeStamp").toString()))>5){
+            JsonOutput response = makeRestCallUsingHttpClient(TargetURL, requestType, requestParams, headers);
+            props.setProperty("accessToken",response.getJsonResponse().get("access_token"));
+            long tokenTimeStamp = Long.parseLong(dateTimeFormatter.format(localDateTime));
+            props.setProperty("accessTokenTimeStamp", tokenTimeStamp);
+        }
+    }
 }
 
