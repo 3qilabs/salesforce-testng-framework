@@ -81,6 +81,9 @@ public class BaseClass {
                     for (int columNum = 0; columNum < totalColumns; columNum++) {
                         sheet.getRow(0).getCell(columNum).setCellType(Cell.CELL_TYPE_STRING);
                         String key = sheet.getRow(0).getCell(columNum).getStringCellValue();
+                        if(sheet.getRow(rowNum).getCell(columNum) == null){
+                            continue;
+                        }
                         sheet.getRow(rowNum).getCell(columNum).setCellType(Cell.CELL_TYPE_STRING);
                         String value = sheet.getRow(rowNum).getCell(columNum).getStringCellValue();
                         rowData.put(key, value);

@@ -22,7 +22,7 @@ public class SalesForceAccount extends BaseDataBean{
     @Randomizer(dataset = "lightning.platform.url")
     public String Website;
 
-    /*@Randomizer(dataset = "env.baseurl")
-    public String  baseURL;*/
+    /*Fields set to null will not be serialized*/
+//    public String Website = null;
 
 }

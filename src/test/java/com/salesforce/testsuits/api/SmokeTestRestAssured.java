@@ -8,6 +8,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class SmokeTestRestAssured extends BaseClass {
 
@@ -15,17 +16,22 @@ public class SmokeTestRestAssured extends BaseClass {
     public Object[][] dataBeanData() {
         SalesForceDataBean dataBean = new SalesForceDataBean();
         dataBean.account.fillRandomData();
+        dataBean.account.fillDataFromDB("select name from accounts;");
         return new Object[][]{{dataBean}};
     }
 
     private String id;
 
-    @Test(dataProvider = "dataBeanDataProvider", description = "Create a new account", priority = 0)
-    public void createAccountUsingDataBean(SalesForceDataBean tcData) {
+    @Test(dataProvider = "excelData", description = "Create a new account", priority = 0)
+    public void createAccountUsingDataBean(Map<String, String> excelData) {
+        SalesForceDataBean salesforceData = new SalesForceDataBean();
+        salesforceData.account.fillRandomData();
+        salesforceData.account.fillDataFromDB("select name from accounts");
+
         String baseUrl = (String)props.getProperty("env.baseurl");
         String endPoint = (String)props.getProperty("accounts.endpoint");
         String requestType = "POST";
-        Response response = makeRestCallUsingRestAssured(baseUrl, endPoint, requestType, tcData.account, new HashMap<String, String>());
+        Response response = makeRestCallUsingRestAssured(baseUrl, endPoint, requestType, salesforceData.account, new HashMap<String, String>());
         System.out.println("Response Code: " + response.getStatusCode());
         this.id = response.jsonPath().get("id").toString();
         boolean success = (boolean) response.jsonPath().get("success");

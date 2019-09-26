@@ -25,6 +25,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.testng.SkipException;
+import com.salesforce.utilities.DatabaseUtil;
 
 public abstract class BaseDataBean {
 //    protected final transient Log logger = LogFactory.getLog(this.getClass());
@@ -67,15 +68,15 @@ public abstract class BaseDataBean {
                     return;
                 }
 
-                /*if (str.startsWith("select")) {
+                if (str.startsWith("select")) {
                     this.fillDataFromDB(str);
                     return;
-                }*/
+                }
 
-                /*if (!ConfigurationManager.getBundle().subset(str).isEmpty()) {
+                if (!ConfigurationManager.getBundle().subset(str).isEmpty()) {
                     this.fillFromConfig(str);
                     return;
-                }*/
+                }
             }
 
             throw new SkipException("Unable to fill data with unknown object. It must be either Map or String: valid json / property key / sql statement." + obj);
@@ -397,6 +398,21 @@ public abstract class BaseDataBean {
         } catch (CloneNotSupportedException var2) {
             throw new RuntimeException(var2);
         }
+    }
+
+    /**
+     * Column names in record returned by query must match bean property names.
+     * If query returns multiple records then bean will filled with first
+     * record.
+     *
+     * @param query
+     *            for example
+     *            <code>select col1 as beanprop1, col2 as beanprop2 ...
+     *            from table</code>
+     */
+    @SuppressWarnings("unchecked")
+    public void fillDataFromDB(String query) {
+        fillData(((Map<String, Object>) DatabaseUtil.getRecordDataAsMap(query)[0][0]));
     }
 
     /*public <T extends BaseDataBean> T deepClone() {
