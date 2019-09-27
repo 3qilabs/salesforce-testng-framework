@@ -12,14 +12,6 @@ import java.util.Map;
 
 public class SmokeTestRestAssured extends BaseClass {
 
-    @DataProvider(name = "dataBeanDataProvider")
-    public Object[][] dataBeanData() {
-        SalesForceDataBean dataBean = new SalesForceDataBean();
-        dataBean.account.fillRandomData();
-        dataBean.account.fillDataFromDB("select name from accounts;");
-        return new Object[][]{{dataBean}};
-    }
-
     private String id;
 
     @Test(dataProvider = "excelData", description = "Create a new account", priority = 0)

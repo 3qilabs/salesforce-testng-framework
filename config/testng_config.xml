@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="Suite">
-    <test name="com.salesforce.testsuits.api.SmokeTest">
+    <test name="com.salesforce.testsuits.api.SmokeTestRestAssured">
         <classes>
-            <class name="com.salesforce.testsuits.api.SmokeTest">
+            <class name="com.salesforce.testsuits.api.SmokeTestRestAssured">
                 <methods>
                     <include name="createAccount"/>
                     <include name="getAccount"/>

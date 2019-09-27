@@ -4,10 +4,12 @@
 /target/
 /.idea
 /img
-/config/test-output
-/config/test-results
+/test/config/test-output
+/test/config/test-results
 /test-output
 /.metadata/
 /*.iml
 /.DS_Store
 src/test/resources/manifest.json
+resources/env1/*.properties
+resources/manifest.json
