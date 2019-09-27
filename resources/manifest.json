@@ -1,0 +1,14 @@
+{
+  "salesforce_instance": "YOUR-SALESFORCE-INSTANCE",
+  "token_url": "https://login.salesforce.com/services/oauth2/token",
+  "grant_type":"password",
+  "client_id":"YOUR-CLIENT-ID",
+  "client_secret":"YOUR-CLIENT-SECRET",
+  "username":"YOUR-USERID",
+  "webPassword": "YOUR-PASSWORD",
+  "password":"YOUR-PASSWORD@CLIENT-SECRET",
+  "salesforce_url" : "https://login.salesforce.com",
+  "browser": "chrome",
+  "waitSeconds": "1000",
+  "closeBrowser": "Method"
+}
