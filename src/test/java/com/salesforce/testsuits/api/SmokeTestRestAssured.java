@@ -9,11 +9,12 @@ import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.log4j.Logger;
 
 public class SmokeTestRestAssured extends BaseClass {
 
     private String id;
-
+    public Logger logger = Logger.getLogger(this.getClass());
     @Test(dataProvider = "excelData", description = "Create a new account", priority = 0)
     public void createAccountUsingDataBean(Map<String, String> excelData) {
         SalesForceDataBean salesforceData = new SalesForceDataBean();
@@ -24,10 +25,10 @@ public class SmokeTestRestAssured extends BaseClass {
         String endPoint = (String)props.getProperty("accounts.endpoint");
         String requestType = "POST";
         Response response = makeRestCallUsingRestAssured(baseUrl, endPoint, requestType, salesforceData.account, new HashMap<String, String>());
-        System.out.println("Response Code: " + response.getStatusCode());
+        this.logger.info("Response Code: " + response.getStatusCode());
         this.id = response.jsonPath().get("id").toString();
         boolean success = (boolean) response.jsonPath().get("success");
         Assert.assertTrue(success);
-        System.out.println("Test Passed!");
+        this.logger.info("Test Passed!");
     }
 }

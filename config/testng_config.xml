@@ -3,12 +3,9 @@
 <suite name="Suite">
     <test name="com.salesforce.testsuits.api.SmokeTestRestAssured">
         <classes>
-            <class name="com.salesforce.testsuits.api.SmokeTestRestAssured">
+            <class name="com.salesforce.testsuits.browser.SmokeTest">
                 <methods>
                     <include name="createAccount"/>
-                    <include name="getAccount"/>
-                    <include name="deleteAccount"/>
-                    <include name="validateDeletedAccount"/>
                 </methods>
             </class>
         </classes>

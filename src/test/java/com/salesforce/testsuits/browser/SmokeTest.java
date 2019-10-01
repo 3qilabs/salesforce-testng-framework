@@ -4,9 +4,12 @@ import com.salesforce.base.BaseUiClass;
 import com.salesforce.pages.AccountsDetailPage;
 import com.salesforce.pages.AccountsPage;
 import com.salesforce.utilities.GenericUtility;
+import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import org.apache.log4j.Logger;
 
 /**
  * This is SmokeTest class to execute smoke test
@@ -24,6 +27,8 @@ public class SmokeTest extends BaseUiClass {
 
    @Test(description = "This test will create a new account", priority = 0)
    public void createAccount(){
+       logger = Logger.getLogger(this.getClass());
+       logger.info("SMOKE TEST STARTED!");
        accountName = GenericUtility.getNewName();
        String accountPhone = GenericUtility.getPhoneNumber();
        String accountFax = GenericUtility.getPhoneNumber();

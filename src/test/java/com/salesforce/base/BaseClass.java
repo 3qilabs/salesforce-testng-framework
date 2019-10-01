@@ -3,6 +3,7 @@ package com.salesforce.base;
 import com.salesforce.core.ConfigurationManager;
 import com.salesforce.utilities.GenericUtility;
 import com.salesforce.utilities.PropertyUtil;
+import com.sun.xml.internal.rngom.parse.host.Base;
 import io.restassured.RestAssured;
 import io.restassured.mapper.ObjectMapperType;
 import io.restassured.specification.RequestSpecification;
@@ -15,6 +16,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.PropertyConfigurator;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -37,6 +39,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+import org.apache.log4j.Logger;
 
 /**
  * This is the base class with methods to make HTTP calls
@@ -45,6 +48,12 @@ import java.util.Map;
  */
 public class BaseClass {
 
+    public BaseClass(){
+        this.logger = Logger.getLogger("BaseClass");
+        PropertyConfigurator.configure("log4j.properties");
+
+    }
+    public Logger logger;
     public String pwd = System.getProperty("user.dir");
 
     /**
@@ -92,7 +101,7 @@ public class BaseClass {
                 }
             }
         } catch (IOException ex) {
-            System.out.println("Exception in readExcelData: \n");
+//            logger.info("Exception in readExcelData: \n");
             ex.printStackTrace();
         }
         return new Object[][]{{excelData.get(testcaseName.getName())}};
@@ -111,13 +120,13 @@ public class BaseClass {
             manifestJsonObject = (JSONObject) obj;
 
         } catch (FileNotFoundException e) {
-            System.out.println("manifest file not found");
+//            logger.info("manifest file not found");
             e.printStackTrace();
         } catch (IOException e) {
-            System.out.println("Exception in opening manifest file");
+//            logger.info("Exception in opening manifest file");
             e.printStackTrace();
         } catch (ParseException e) {
-            System.out.println("Exception in parsing manifest file");
+//            logger.info("Exception in parsing manifest file");
             e.printStackTrace();
         }
     }
@@ -176,7 +185,7 @@ public class BaseClass {
 
             // If the caller is NOT "getAccessToken", then get the access token
             if (!(stackTraceElements[2].getMethodName().equals("getAccessToken"))) {
-                System.out.println("********Getting Access Token********");
+//                logger.info("********Getting Access Token********");
                 //accessToken = getAccessToken();
                 getAccessToken();
                 accessToken = props.getProperty("accessToken").toString();
@@ -189,7 +198,7 @@ public class BaseClass {
                     connection.setRequestProperty(key, value);
                 }
             }
-            System.out.println("********Making Rest Call******** \n" + requestType + ": " + "\nURL: " + targetURL);
+//            logger.info("********Making Rest Call******** \n" + requestType + ": " + "\nURL: " + targetURL);
             switch (requestType) {
                 case "GET":
                     connection.setRequestMethod("GET");
@@ -215,7 +224,7 @@ public class BaseClass {
                 inStream = connection.getInputStream();
                 responseCode = connection.getResponseCode();
             } catch (FileNotFoundException e) {
-                System.out.println("The resource you are looking for is not found");
+//                logger.info("The resource you are looking for is not found");
                 e.printStackTrace();
             }
             BufferedReader rd = new BufferedReader(new InputStreamReader(inStream));
@@ -269,7 +278,7 @@ public class BaseClass {
                     StringEntity input = new StringEntity(requestParams);
                     postRequest.setEntity(input);
                 } catch (UnsupportedEncodingException e) {
-                    System.out.println("Unsupported Encoding in POST call");
+//                    logger.info("Unsupported Encoding in POST call");
                     e.printStackTrace();
                 }
                 request = postRequest;
@@ -285,7 +294,7 @@ public class BaseClass {
                     request.addHeader(key, value);
                 }
             } catch (NullPointerException e) {
-                System.out.println("Request is not initialized! Please check the Request Type column in the excel.");
+//                logger.info("Request is not initialized! Please check the Request Type column in the excel.");
                 e.printStackTrace();
             }
         }
@@ -295,12 +304,12 @@ public class BaseClass {
 
         // If the caller is NOT "getAccessToken", then get the access token
         if (!(stackTraceElements[2].getMethodName().equals("getAccessToken"))) {
-            System.out.println("********Getting Access Token********");
+//            logger.info("********Getting Access Token********");
            // accessToken = getAccessToken();
             getAccessToken();
             accessToken = props.getProperty("accessToken").toString();
             request.addHeader("Authorization", "Bearer " + accessToken);
-            System.out.println("********Making HTTP Call********");
+//            logger.info("********Making HTTP Call********");
         }
 
         HttpResponse response = null;
@@ -319,6 +328,7 @@ public class BaseClass {
             e.printStackTrace();
         }
 
+        httpClient.close();
         if (response.toString().isEmpty()) {
             return new JsonOutput();
         }
@@ -387,12 +397,12 @@ public class BaseClass {
 
             // If the caller is NOT "getAccessToken", then get the access token
             if (!(stackTraceElements[2].getMethodName().equals("getAccessToken"))) {
-                System.out.println("********Getting Access Token********");
+                this.logger.info("********Getting Access Token********");
                 //accessToken = getAccessToken();
                 getAccessToken();
                 accessToken = props.getProperty("accessToken").toString();
                 request.header("Authorization", "Bearer " + accessToken);
-                System.out.println("********Making HTTP Call********");
+                this.logger.info("********Making HTTP Call********");
             }
 
             if (requestParams.getClass().equals("String")){
