@@ -3,7 +3,7 @@ package com.salesforce.base;
 import com.salesforce.core.ConfigurationManager;
 import com.salesforce.utilities.GenericUtility;
 import com.salesforce.utilities.PropertyUtil;
-import com.sun.xml.internal.rngom.parse.host.Base;
+//import com.sun.xml.internal.rngom.parse.host.Base;
 import io.restassured.RestAssured;
 import io.restassured.mapper.ObjectMapperType;
 import io.restassured.specification.RequestSpecification;
@@ -32,13 +32,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.*;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -51,8 +50,8 @@ public class BaseClass {
     public BaseClass(){
         this.logger = Logger.getLogger("BaseClass");
         PropertyConfigurator.configure("log4j.properties");
-
     }
+
     public Logger logger;
     public String pwd = System.getProperty("user.dir");
 

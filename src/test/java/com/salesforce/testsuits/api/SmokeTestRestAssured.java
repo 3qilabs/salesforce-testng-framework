@@ -20,7 +20,7 @@ public class SmokeTestRestAssured extends BaseClass {
         SalesForceDataBean salesforceData = new SalesForceDataBean();
         salesforceData.account.fillRandomData();
         salesforceData.account.fillDataFromDB("select name from accounts");
-
+        this.logger.info("SMOKE TEST STARTED!");
         String baseUrl = (String)props.getProperty("env.baseurl");
         String endPoint = (String)props.getProperty("accounts.endpoint");
         String requestType = "POST";
