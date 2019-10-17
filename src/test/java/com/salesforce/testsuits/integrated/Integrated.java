@@ -32,10 +32,14 @@ public class Integrated  extends BaseUiClass {
         //request type
         String requestType = "POST";
         //making Http call with REST Assured
+        System.out.println("Creating an Account using REST API");
+        System.out.println("Base URL: " + baseUrl);
+        System.out.println("Request Type: " + requestType);
         Response response = makeRestCallUsingRestAssured(baseUrl, endPoint, requestType, salesforceData.account, new HashMap<String, String>());
         this.logger.info("Response Code: " + response.getStatusCode());
         //storing id from json response
         id = response.jsonPath().get("id").toString();
+        System.out.println("Verifying Account on Salesforce platform UI");
         //creating object of AccountsPage class
         AccountsPage accountsPage = new AccountsPage(driver);
         //calling openPage method from AccountsPage class
@@ -53,6 +57,7 @@ public class Integrated  extends BaseUiClass {
         this.logger.info("Actual result is "+actualAccountName+" and expected result is "+salesforceData.account.Name);
         //calling logOut method from AccountsPage class
         accountsPage.logOut();
+        System.out.println("Account creation successfully validated on the UI!");
     }
 
     @Test(dataProvider = "excelData", description = "Update created account from UI and validate from API", priority = 1)

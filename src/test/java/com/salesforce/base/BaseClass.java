@@ -419,6 +419,7 @@ public class BaseClass {
                 case "DELETE":
                     return request.delete(endPoint);
                 case "POST":
+                    request.log().body();
                     return request.post(endPoint);
                 default:
                     return null;

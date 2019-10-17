@@ -53,10 +53,13 @@ public class LoginPage extends BaseClass {
      * Getting url, username and password from '/src/main/resources/manifest.json'
      */
     protected void login(){
-       String url = manifestJsonObject.get("salesforce_url").toString();
+     /*  String url = manifestJsonObject.get("salesforce_url").toString();
        String usrname = manifestJsonObject.get("username").toString();
-       String psw = manifestJsonObject.get("webPassword").toString();
-       driver.get(url);
+       String psw = manifestJsonObject.get("webPassword").toString();*/
+     String url = props.getProperty("salesforce_url").toString();
+     String usrname = props.getProperty("username").toString();
+     String psw = props.getProperty("webPassword").toString();
+     driver.get(url);
        getUsername().sendKeys(usrname);
        getPassword().sendKeys(psw);
        getLoginBtn().click();
